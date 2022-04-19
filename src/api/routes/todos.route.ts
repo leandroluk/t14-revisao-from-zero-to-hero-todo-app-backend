@@ -3,11 +3,6 @@ import { todosController } from '../../app/controllers'
 
 const todosRoute = Router()
 /*
-// getTodo
-todosRoute.get('/:id', async (req, res) => {
-  res.send(req)
-})
-
 // editTodo
 todosRoute.put('/:id', async (req, res) => {
   res.send(req)
@@ -23,10 +18,11 @@ todosRoute.get('/', async (_, res) => {
   const result = await todosController.list()
   res.json(result)
 })
-/*
+
 // addTodo
 todosRoute.post('/', async (req, res) => {
-  res.send(req)
+  const result = await todosController.add(req.body)
+  res.status(201).json(result)
 })
-*/
+
 export { todosRoute }
