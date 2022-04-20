@@ -5,7 +5,7 @@ import { runSchema } from './_validators'
 export class TodosValidator {
   async paramsId(value: unknown): Promise<Indexable> {
     const schema = Joi.object<Indexable>({
-      id: Joi.number().required().positive().integer(),
+      id: Joi.string().required().length(36),
     })
 
     const result = await runSchema(schema, value)

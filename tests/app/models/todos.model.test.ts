@@ -38,36 +38,36 @@ describe('app/models/todos.model', () => {
   describe('get', () => {
     it('should throw if TodoDAO.findOne throws', () => {
       sinon.stub(TodoDAO, 'findOne').rejects()
-      expect(todosModel.get(1)).to.eventually.be.rejected
+      expect(todosModel.get('1')).to.eventually.be.rejected
     })
 
     it('should return result', () => {
       sinon.stub(TodoDAO, 'findOne').resolves({} as any)
-      expect(todosModel.get(1)).to.eventually.deep.equal({})
+      expect(todosModel.get('1')).to.eventually.deep.equal({})
     })
   })
 
   describe('edit', () => {
     it('should throw if TodoDAO.update throws', () => {
       sinon.stub(TodoDAO, 'update').rejects()
-      expect(todosModel.edit(1, {})).to.eventually.be.rejected
+      expect(todosModel.edit('1', {})).to.eventually.be.rejected
     })
 
     it('should return undefined if edit', () => {
       sinon.stub(TodoDAO, 'update').resolves()
-      expect(todosModel.edit(1, {})).to.eventually.be.undefined
+      expect(todosModel.edit('1', {})).to.eventually.be.undefined
     })
   })
 
   describe('remove', () => {
     it('should throw if TodoDAO.destroy throws', () => {
       sinon.stub(TodoDAO, 'destroy').rejects()
-      expect(todosModel.remove(1)).to.eventually.be.rejected
+      expect(todosModel.remove('1')).to.eventually.be.rejected
     })
 
     it('should return undefined if remove', () => {
       sinon.stub(TodoDAO, 'destroy').resolves()
-      expect(todosModel.remove(1)).to.eventually.be.undefined
+      expect(todosModel.remove('1')).to.eventually.be.undefined
     })
   })
 })

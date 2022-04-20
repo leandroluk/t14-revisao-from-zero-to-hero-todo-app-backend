@@ -4,9 +4,8 @@ const makeTodoDAO = (sequelize: Sequelize) => {
   const model = sequelize.define('todos', {
     id: {
       allowNull: false,
-      autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: DataTypes.STRING(36)
     },
     description: {
       allowNull: false,

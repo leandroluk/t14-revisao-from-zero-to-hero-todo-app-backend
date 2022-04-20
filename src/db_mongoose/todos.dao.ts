@@ -1,29 +1,29 @@
-import { Schema, model as makeModel, Model } from 'mongoose'
+import { Schema, model } from 'mongoose'
 
-const makeTodoDAO = (mongoose: any): Model<any> => {
-  const schema = new Schema({
-    description: {
-      type: Schema.Types.String,
-      required: true
-    },
-    isDone: {
-      type: Schema.Types.Boolean,
-      required: true
-    },
-    createdAt: {
-      type: Schema.Types.Date,
-      required: true
-    },
-    updatedAt: {
-      type: Schema.Types.Date
-    }
-  }, {
-    id: true,
-    versionKey: false
-  })
-  schema.plugin(mongoose.autoIncrement.plugin, 'Book')
-  const model = makeModel('todos', schema, 'todos')
-  return model
-}
+const schema = new Schema({
+  id: {
+    type: Schema.Types.String,
+    unique: true,
+    required: true
+  },
+  description: {
+    type: Schema.Types.String,
+    required: true
+  },
+  isDone: {
+    type: Schema.Types.Boolean,
+    required: true
+  },
+  createdAt: {
+    type: Schema.Types.Date,
+    required: true
+  },
+  updatedAt: {
+    type: Schema.Types.Date
+  }
+}, {
+  versionKey: false
+})
 
-export default makeTodoDAO
+export const TodoDAO = model('todos', schema, 'todos')
+

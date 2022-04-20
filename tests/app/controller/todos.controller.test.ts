@@ -43,14 +43,14 @@ describe('app/models/todos.controller', () => {
 
     it('should throw if todosService.get throws', () => {
       sinon.stub(todosValidator, 'bodyAdd').resolves({} as AddTodo)
-      sinon.stub(todosService, 'add').resolves(1)
+      sinon.stub(todosService, 'add').resolves('1')
       sinon.stub(todosService, 'get').rejects()
       expect(todosController.add({})).to.eventually.be.rejected
     })
 
     it('should return result', () => {
       sinon.stub(todosValidator, 'bodyAdd').resolves({} as AddTodo)
-      sinon.stub(todosService, 'add').resolves(1)
+      sinon.stub(todosService, 'add').resolves('1')
       sinon.stub(todosService, 'get').resolves({} as Todo)
       expect(todosController.add({})).to.eventually.deep.equal({})
     })

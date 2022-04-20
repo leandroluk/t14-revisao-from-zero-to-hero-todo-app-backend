@@ -1,3 +1,4 @@
+import crypto from 'crypto'
 import { expect, request, use } from 'chai'
 import chaiHttp from 'chai-http'
 import sinon from 'sinon'
@@ -8,6 +9,8 @@ use(chaiHttp)
 
 describe('api/routes', () => {
   beforeEach(sinon.restore)
+
+  const id = crypto.randomUUID()
 
   describe('GET / - listTodo', () => {
     it('should return 500 if db throws', async () => {
@@ -73,7 +76,7 @@ describe('api/routes', () => {
       sinon.stub(TodoDAO, 'findOne').rejects()
 
       const result = await request(api)
-        .put('/todos/1')
+        .put(`/todos/${id}`)
         .send(mock)
 
       expect(result.status).to.equal(500)
@@ -83,7 +86,7 @@ describe('api/routes', () => {
       sinon.stub(TodoDAO, 'findOne').resolves()
 
       const result = await request(api)
-        .put('/todos/1')
+        .put(`/todos/${id}`)
         .send(mock)
 
       expect(result.status).to.equal(404)
@@ -102,7 +105,7 @@ describe('api/routes', () => {
       sinon.stub(TodoDAO, 'update').resolves()
 
       const result = await request(api)
-        .put('/todos/1')
+        .put(`/todos/${id}`)
         .send(mock)
 
       expect(result.status).to.equal(200)
@@ -114,7 +117,7 @@ describe('api/routes', () => {
       sinon.stub(TodoDAO, 'findOne').rejects()
 
       const result = await request(api)
-        .delete('/todos/1')
+        .delete(`/todos/${id}`)
 
       expect(result.status).to.equal(500)
     })
@@ -123,7 +126,7 @@ describe('api/routes', () => {
       sinon.stub(TodoDAO, 'findOne').resolves()
 
       const result = await request(api)
-        .delete('/todos/1')
+        .delete(`/todos/${id}`)
 
       expect(result.status).to.equal(404)
     })
@@ -140,7 +143,7 @@ describe('api/routes', () => {
       sinon.stub(TodoDAO, 'destroy').resolves()
 
       const result = await request(api)
-        .delete('/todos/1')
+        .delete(`/todos/${id}`)
 
       expect(result.status).to.equal(204)
     })
