@@ -1,14 +1,15 @@
 import { expect, use } from 'chai'
 import chaiAsPromised from 'chai-as-promised'
 import sinon from 'sinon'
-import { todosModel } from '../../../src/app/models/todos.model'
-import { todosService } from '../../../src/app/services'
-
+import { TodosModel } from '../../../src/app/models/todos.model'
+import { TodosService } from '../../../src/app/services'
 
 use(chaiAsPromised)
 
 describe('app/models/todos.service', () => {
   beforeEach(sinon.restore)
+  const todosModel = new TodosModel()
+  const todosService = new TodosService(todosModel)
 
   describe('list', () => {
     it('should throw if todosModel.list throws', () => {
@@ -48,6 +49,54 @@ describe('app/models/todos.service', () => {
     it('should return result', () => {
       sinon.stub(todosModel, 'get').resolves({} as any)
       expect(todosService.get(1)).to.eventually.deep.equal({})
+    })
+  })
+
+  describe('edit', () => {
+    it('should throw if todosModel.get throws', () => {
+      sinon.stub(todosModel, 'get').rejects()
+      expect(todosService.edit(1, {})).to.eventually.be.rejected
+    })
+
+    it('should throw if todosModel.get return empty', () => {
+      sinon.stub(todosModel, 'get').resolves()
+      expect(todosService.edit(1, {})).to.eventually.be.rejected
+    })
+
+    it('should throw if todosModel.edit throws', () => {
+      sinon.stub(todosModel, 'get').resolves({} as any)
+      sinon.stub(todosModel, 'edit').rejects()
+      expect(todosService.edit(1, {})).to.eventually.be.rejected
+    })
+
+    it('should return nothing if success', () => {
+      sinon.stub(todosModel, 'get').resolves({} as any)
+      sinon.stub(todosModel, 'edit').resolves()
+      expect(todosService.edit(1, {})).to.eventually.be.undefined
+    })
+  })
+
+  describe('remove', () => {
+    it('should throw if todosModel.get throws', () => {
+      sinon.stub(todosModel, 'get').rejects()
+      expect(todosService.remove(1)).to.eventually.be.rejected
+    })
+
+    it('should throw if todosModel.get return empty', () => {
+      sinon.stub(todosModel, 'get').resolves()
+      expect(todosService.remove(1)).to.eventually.be.rejected
+    })
+
+    it('should throw if todosModel.remove throws', () => {
+      sinon.stub(todosModel, 'get').resolves({} as any)
+      sinon.stub(todosModel, 'remove').rejects()
+      expect(todosService.remove(1)).to.eventually.be.rejected
+    })
+
+    it('should return nothing if success', () => {
+      sinon.stub(todosModel, 'get').resolves({} as any)
+      sinon.stub(todosModel, 'remove').resolves()
+      expect(todosService.remove(1)).to.eventually.be.undefined
     })
   })
 })

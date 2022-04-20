@@ -2,7 +2,7 @@ import { expect, request, use } from 'chai'
 import chaiHttp from 'chai-http'
 import sinon from 'sinon'
 import api from '../../../src/api'
-import { TodoDAO } from '../../../src/db'
+import { TodoDAO } from '../../../src/db_sequelize'
 
 use(chaiHttp)
 
@@ -63,6 +63,86 @@ describe('api/routes', () => {
 
       expect(result.status).to.equal(201)
       expect(result.body).to.deep.equal(mock)
+    })
+  })
+
+  describe('PUT /:id - editTodo', () => {
+    const mock = { description: 'ola mundo' }
+
+    it('should return 500 if db throws', async () => {
+      sinon.stub(TodoDAO, 'findOne').rejects()
+
+      const result = await request(api)
+        .put('/todos/1')
+        .send(mock)
+
+      expect(result.status).to.equal(500)
+    })
+
+    it('should return 404 if id not found', async () => {
+      sinon.stub(TodoDAO, 'findOne').resolves()
+
+      const result = await request(api)
+        .put('/todos/1')
+        .send(mock)
+
+      expect(result.status).to.equal(404)
+    })
+
+    it('should return 400 if validation throws', async () => {
+      const result = await request(api)
+        .put('/todos/a')
+        .send(mock)
+
+      expect(result.status).to.equal(400)
+    })
+
+    it('should return 200 if success', async () => {
+      sinon.stub(TodoDAO, 'findOne').resolves({} as any)
+      sinon.stub(TodoDAO, 'update').resolves()
+
+      const result = await request(api)
+        .put('/todos/1')
+        .send(mock)
+
+      expect(result.status).to.equal(200)
+    })
+  })
+
+  describe('DELETE /:id - removeTodo', () => {
+    it('should return 500 if db throws', async () => {
+      sinon.stub(TodoDAO, 'findOne').rejects()
+
+      const result = await request(api)
+        .delete('/todos/1')
+
+      expect(result.status).to.equal(500)
+    })
+
+    it('should return 404 if id not found', async () => {
+      sinon.stub(TodoDAO, 'findOne').resolves()
+
+      const result = await request(api)
+        .delete('/todos/1')
+
+      expect(result.status).to.equal(404)
+    })
+
+    it('should return 400 if validation throws', async () => {
+      const result = await request(api)
+        .delete('/todos/a')
+
+      expect(result.status).to.equal(400)
+    })
+
+    it('should return 200 if success', async () => {
+      sinon.stub(TodoDAO, 'findOne').resolves({} as any)
+      sinon.stub(TodoDAO, 'destroy').resolves()
+
+      const result = await request(api)
+        .delete('/todos/1')
+
+      expect(result.status).to.equal(204)
     })
   })
 })

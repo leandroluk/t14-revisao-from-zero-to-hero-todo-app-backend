@@ -1,18 +1,22 @@
 import { Router } from 'express'
-import { todosController } from '../../app/controllers'
+import { makeTodosController } from '../../app/factories'
 
 const todosRoute = Router()
-/*
+const todosController = makeTodosController()
+
 // editTodo
 todosRoute.put('/:id', async (req, res) => {
-  res.send(req)
+  const result = await todosController.edit(req.params, req.body)
+  res.json(result)
 })
+
 
 // removeTodo
 todosRoute.delete('/:id', async (req, res) => {
-  res.send(req)
+  await todosController.remove(req.params)
+  res.sendStatus(204)
 })
-*/
+
 // listTodo
 todosRoute.get('/', async (_, res) => {
   const result = await todosController.list()
