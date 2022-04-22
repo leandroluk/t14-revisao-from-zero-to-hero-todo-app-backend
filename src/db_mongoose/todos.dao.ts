@@ -1,6 +1,11 @@
-import { Schema, model } from 'mongoose'
+import { Types, Schema, model } from 'mongoose'
 
 const schema = new Schema({
+  _id: {
+    type: Schema.Types.ObjectId,
+    default: () => new Types.ObjectId(),
+    select: false
+  },
   id: {
     type: Schema.Types.String,
     unique: true,

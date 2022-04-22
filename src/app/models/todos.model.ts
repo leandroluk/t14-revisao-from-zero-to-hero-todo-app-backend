@@ -6,7 +6,7 @@ import { AddTodo, EditTodo, Todo } from '../../types'
 export class TodosModel {
   async list(): Promise<Todo[]> {
     // const result = await TodoDAO.findAll({ raw: true })
-    const result = await TodoDAO.find({ raw: true }, '-_id')
+    const result = await TodoDAO.find({ raw: true })
     return result as unknown as Todo[]
   }
 
@@ -19,7 +19,7 @@ export class TodosModel {
 
   async get(id: Todo['id']): Promise<Todo> {
     // const result = await TodoDAO.findOne({ where: { id }, raw: true })
-    const result = await TodoDAO.findOne({ id }, '-_id')
+    const result = await TodoDAO.findOne({ id })
     return result as unknown as Todo
   }
 

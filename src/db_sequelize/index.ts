@@ -3,7 +3,8 @@ import vars from '../vars'
 import makeTodoDAO from './todos.dao'
 
 const sequelize = new Sequelize(vars.mysql.uri, {
-  dialect: 'mysql'
+  dialect: 'mysql',
+  omitNull: true
 })
 
 export const TodoDAO = makeTodoDAO(sequelize)
